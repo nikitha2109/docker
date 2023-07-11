@@ -5,6 +5,12 @@ WORKDIR /app
 RUN apt-get update
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get -y install nodejs
+RUN groupadd -r myuser && useradd -r -g myuser myuser
+
+# Set permissions for user
+RUN chown -R myuser:myuser /app/publish
+
+USER myuser
 
 # Copy the project files to the container
 COPY . .
