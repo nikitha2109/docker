@@ -4,7 +4,7 @@ WORKDIR /app
 RUN apt-get update
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get -y install nodejs
-RUN groupadd -r myuser && useradd -r -g myuser myuser
+#RUN groupadd -r myuser && useradd -r -g myuser myuser
 
 # Copy the project files to the container
 COPY . .
@@ -16,9 +16,9 @@ RUN dotnet restore
 RUN dotnet publish "dotnet6.csproj" -c Release -o /app/publish
 
 # Set permissions for user
-RUN chown -R myuser:myuser /app/publish
+#RUN chown -R myuser:myuser /app/publish
 
-USER myuser
+#USER myuser
 
 # Start a new stage for the runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
