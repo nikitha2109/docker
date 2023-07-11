@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: deploying
   labels:
-    app: MYAPP
+    app: myapp
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: MYAPP
+      app: myapp
   template:
     metadata:
       labels:
-        app: MYAPP
+        app: myapp
     spec:
       containers:
       - name: docker
