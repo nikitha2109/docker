@@ -18,4 +18,4 @@ spec:
       - name: docker
         image: nikitha2109/docker-11-app:1.0.1
         ports:
-      - containerPort: 80
+         - containerPort: 80
