@@ -26,7 +26,7 @@ spec:
           # - Each init container must complete successfully before the next one starts.
       containers:
       - name:  MYAPP
-        image: azacrshared.azurecr.io/walmarttpositoty:20220612.07
+        image: docker-11-app:latest
         resources:
           requests:
             cpu: 100m
