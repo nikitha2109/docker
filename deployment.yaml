@@ -17,6 +17,8 @@ spec:
     spec:
       containers:
       - name: docker
-        image: nbyreddy/dockerdep-10-app:1.0.0
+        image: kuberneties1.azurecr.io/my_image
         ports:
          - containerPort: 80
+      imagePullSecrets:
+       - name: acr-secret
