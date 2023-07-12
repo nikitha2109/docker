@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: docker
-        image: kuberneties1.azurecr.io/my_image
+        image: kuberneties1.azurecr.io/my_image:2.0.1
         ports:
          - containerPort: 80
       imagePullSecrets:
