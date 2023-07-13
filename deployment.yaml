@@ -16,7 +16,7 @@ spec:
         app: myapp
     spec:
       containers:
-      - name: docker
+      - name: myapp
         image: kuberneties1.azurecr.io/my_image:2.0.1
         ports:
          - containerPort: 80
