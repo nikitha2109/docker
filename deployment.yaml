@@ -21,4 +21,4 @@ spec:
         ports:
          - containerPort: 80
       imagePullSecrets:
-       - name: acr-secret1
+       - name: acr-secret2
