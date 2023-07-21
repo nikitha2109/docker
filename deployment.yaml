@@ -2,11 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deploying
-  namespace: nikithaspace
-  labels:
-    app: myapp
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
       app: myapp
@@ -17,8 +19,30 @@ spec:
     spec:
       containers:
       - name: myapp
-        image: kuberneties1.azurecr.io/my_image:2.0.1
+        image: my-app-image:latest
         ports:
-         - containerPort: 80
-      imagePullSecrets:
-       - name: acr-secret2
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 15
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 20
+        env:
+        - name: config_key1
+          valueFrom:
+            configMapKeyRef:
+              name: my-configmap
+              key: config_key1
+        - name: secret_key
+          valueFrom:
+            secretKeyRef:
+              name: my-secret
+              key: secret_key
+      
