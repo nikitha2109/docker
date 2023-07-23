@@ -1,10 +1,11 @@
+# Stage 1: Build the application
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 
+# Install Node.js
 RUN apt-get update
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get -y install nodejs
-#RUN groupadd -r myuser && useradd -r -g myuser myuser
 
 # Copy the project files to the container
 COPY . .
@@ -15,12 +16,7 @@ RUN dotnet restore
 # Build and publish the application
 RUN dotnet publish "dotnet6.csproj" -c Release -o /app/publish
 
-# Set permissions for user
-#RUN chown -R myuser:myuser /app/publish
-
-#USER myuser
-
-# Start a new stage for the runtime image
+# Stage 2: Create the runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
 WORKDIR /app
 
