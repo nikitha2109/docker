@@ -1,33 +1,19 @@
-# Stage 1: Build the application
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 
-# Install Node.js
 RUN apt-get update
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_16.x  | bash -
 RUN apt-get -y install nodejs
 
-# Copy the project files to the container
-COPY . .
-
-# Restore dependencies
+COPY . ./
 RUN dotnet restore
+RUN dotnet publish "dotnet6.csproj" -c Release -o /app/publish
 
-# Build and publish the application
-RUN dotnet publish "dotnet6.csproj" -c Release -o /app/publish || cat /app/*.csproj
 
-# Stage 2: Create the runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-
-# Copy the published output from the build stage
 COPY --from=build /app/publish .
 
-# Set the environment variable for ASP.NET Core URL binding
 ENV ASPNETCORE_URLS http://*:5000
-
-# Expose the port
 EXPOSE 5000
-
-# Set the entry point to start the application
 ENTRYPOINT ["dotnet", "dotnet6.dll"]
