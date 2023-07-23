@@ -14,7 +14,7 @@ COPY . .
 RUN dotnet restore
 
 # Build and publish the application
-RUN dotnet publish "dotnet6.csproj" -c Release -o /app/publish
+RUN dotnet publish "dotnet6.csproj" -c Release -o /app/publish || cat /app/*.csproj
 
 # Stage 2: Create the runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
