@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y nodejs npm
 
 
 COPY . .
-RUN dotnet build -c Release --no-restore
+RUN dotnet build -c Release
 RUN dotnet publish -c Release -o publish --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
