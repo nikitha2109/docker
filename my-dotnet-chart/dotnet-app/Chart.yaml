@@ -1,0 +1,23 @@
+
+apiVersion: apps/v1
+name: my-dotnet-chart
+version: 0.1.0
+kind: Deployment
+metadata:
+  name: dotnet-app
+  namespace: nikithaspace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dotnet-app
+  template:
+    metadata:
+      labels:
+        app: dotnet-app
+    spec:
+      containers:
+      - name: dotnet-app
+        image: nikitha2109/nikithaimage:1.0.1
+        ports:
+        - containerPort: 80

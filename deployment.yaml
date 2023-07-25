@@ -2,56 +2,50 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deploying
+  namespace: nikithaspace
+  labels:
+    app: myapp
 spec:
-  affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: mydotnetnode
-                    operator: In
-                    values:
-                      - "true"
   replicas: 2
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 1
   selector:
     matchLabels:
       app: myapp
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   template:
     metadata:
       labels:
         app: myapp
     spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: disktype
+                operator: In
+                values:
+                - ssd
       containers:
-      - name: myapp
-        image: nbyreddy/dockerdep-10-app:1.0.0
+      - name: dotnet
+        image: nikitha2109/nikithaimage:1.0.1
         ports:
-        - containerPort: 80
+        - containerPort: 5000
         readinessProbe:
           httpGet:
-            path: /health
-            port: 80
+            path: /healthz
+            port: 5000
           initialDelaySeconds: 10
-          periodSeconds: 15
+          periodSeconds: 5
         livenessProbe:
           httpGet:
-            path: /health
-            port: 80
+            path: /healthz
+            port: 5000
           initialDelaySeconds: 30
-          periodSeconds: 20
-        env:
-        - name: config_key1
-          valueFrom:
-            configMapKeyRef:
-              name: my-configmap
-              key: config_key1
-        - name: secret_key
-          valueFrom:
-            secretKeyRef:
-              name: my-secret
-              key: secret_key
-      
+          periodSeconds: 10
+      imagePullSecrets:
+        - name: sha
