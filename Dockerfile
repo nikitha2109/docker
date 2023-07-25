@@ -17,11 +17,5 @@ COPY --from=build /app/publish .
 
 ENV ASPNETCORE_URLS=http://*:5000
 
-RUN groupadd -r nikitha && \
-    useradd -r -g nikitha -s /bin/false nikitha && \
-    chown -R nikitha:nikitha /app
-
-USER nikitha
-
-EXPOSE 8080
+EXPOSE 5000
 ENTRYPOINT ["dotnet", "dotnet6.dll"]
