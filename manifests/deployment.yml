@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: deployimage 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deployimage
+  template:
+    metadata:
+      labels:
+        app: deployimage 
+    spec:
+      containers:
+        - name: deployimage 
+          image: clusters.azurecr.io/deployimage
+          ports:
+          - containerPort: 5000
