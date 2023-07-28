@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deploying
+  name: dotnet-app
   namespace: nikithaspace
   labels:
     app: myapp
@@ -20,32 +20,22 @@ spec:
       labels:
         app: myapp
     spec:
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 1
-            preference:
-              matchExpressions:
-              - key: disktype
-                operator: In
-                values:
-                - ssd
       containers:
-      - name: dotnet
-        image: nikitha2109/nikithaimage:1.0.1
-        ports:
-        - containerPort: 5000
-        readinessProbe:
-          httpGet:
-            path: /healthz
-            port: 5000
-          initialDelaySeconds: 10
-          periodSeconds: 5
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 5000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-      imagePullSecrets:
-        - name: sha
+        - name: dotnet
+          image: nikitha2109/nikithaimage:1.0.1
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          
+      
